@@ -365,8 +365,42 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (winMain), vboxMain);
 
   menubar = gtk_menu_bar_new ();
+  GtkStyleContext *gsc;
+  gsc = gtk_widget_get_style_context(menubar);
+  gtk_style_context_add_class(gsc, "button");
+  //gtk_widget_show (menubar);
+
+  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
+
+  toolbarMain = gtk_toolbar_new ();
+  gtk_widget_show (toolbarMain);
+  gtk_box_pack_start (GTK_BOX (vboxMain), toolbarMain, FALSE, FALSE, 0);
+  gtk_toolbar_set_style (GTK_TOOLBAR (toolbarMain), GTK_TOOLBAR_ICONS);
+  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
+
+  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
   gtk_widget_show (menubar);
-  gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
+  gtk_container_add (GTK_CONTAINER (toolbarMain), menubar);
+
+  //GtkToolItem *menuButton;
+  GtkWidget *menuButton;
+  menuButton = (GtkWidget*) gtk_tool_button_new_from_stock (GTK_STOCK_OK);
+  gtk_tool_button_set_label((GtkToolButton*) menuButton, "menu button");
+  //onlyitem = (GtkWidget*) gtk_button_new_with_label("Menu");
+  //onlyitem.set_submenu(menubar);
+
+
+  // from epiphany source
+  GtkActionGroup *action_group;
+  GtkAction *action;
+  //action = gtk_action_group_get_action (action_group, "PageMenu");
+  
+  //gtk_activatable_set_related_action (GTK_ACTIVATABLE (menuButton),
+  //action);
+  gtk_widget_show_all (menuButton);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), (GtkWidget*) menuButton);
+  gtk_container_add (GTK_CONTAINER (toolbarMain), menuButton);
+  
 
   menuFile = gtk_menu_item_new_with_mnemonic (_("_File"));
   gtk_widget_show (menuFile);
@@ -1443,17 +1477,15 @@ create_winMain (void)
   gtk_widget_show (helpAbout);
   gtk_container_add (GTK_CONTAINER (menuHelp_menu), helpAbout);
 
-  toolbarMain = gtk_toolbar_new ();
-  gtk_widget_show (toolbarMain);
-  gtk_box_pack_start (GTK_BOX (vboxMain), toolbarMain, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbarMain), GTK_TOOLBAR_ICONS);
-  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
+
+  // toolbar was here originally
 
   saveButton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-save");
   gtk_widget_show (saveButton);
   gtk_container_add (GTK_CONTAINER (toolbarMain), saveButton);
   gtk_widget_set_tooltip_text(saveButton, _("Save"));
   //gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (saveButton), tooltips, _("Save"), NULL);
+
 
   newButton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-new");
   gtk_widget_show (newButton);
@@ -2478,6 +2510,14 @@ create_winMain (void)
   g_signal_connect ((gpointer) newButton, "clicked",
                     G_CALLBACK (on_fileNew_activate),
                     NULL);
+  // cbm
+  g_signal_connect_swapped ((gpointer) menuButton, "clicked",
+                    G_CALLBACK (my_popup_handler),
+		    menuFile_menu);  // menubar?, fileMenu
+  /* connect our handler which will popup the menu */
+  //g_signal_connect_swapped (winMain, "button_press_event",
+  //G_CALLBACK (my_popup_handler), menubar);
+
   g_signal_connect ((gpointer) openButton, "clicked",
                     G_CALLBACK (on_fileOpen_activate),
                     NULL);
@@ -2840,6 +2880,7 @@ create_winMain (void)
   GLADE_HOOKUP_OBJECT (winMain, toolbarMain, "toolbarMain");
   GLADE_HOOKUP_OBJECT (winMain, saveButton, "saveButton");
   GLADE_HOOKUP_OBJECT (winMain, newButton, "newButton");
+  //GLADE_HOOKUP_OBJECT (winMain, menuButton, "menuButton");
   GLADE_HOOKUP_OBJECT (winMain, openButton, "openButton");
   GLADE_HOOKUP_OBJECT (winMain, toolitem11, "toolitem11");
   GLADE_HOOKUP_OBJECT (winMain, vseparator1, "vseparator1");

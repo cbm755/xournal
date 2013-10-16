@@ -53,6 +53,50 @@ void xo_rescale(void)
   rescale_images();
 }
 
+
+gint
+my_popup_handler (GtkWidget *widget, GdkEvent *event)
+{
+  GtkMenu *menu;
+  GdkEventButton *event_button;
+
+  TRACE_1("clicked my");
+
+  g_return_val_if_fail (widget != NULL, FALSE);
+  //g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
+  g_return_val_if_fail (event != NULL, FALSE);
+
+  TRACE_1("past asserts");
+
+  /* The "widget" is the menu that was supplied when 
+   * g_signal_connect_swapped() was called.
+   */
+  //menu = (GTK_MENU*) (widget);
+  menu = GTK_MENU (widget);
+
+  if (event->type == GDK_BUTTON_PRESS)
+    {
+      event_button = (GdkEventButton *) event;
+      //if (event_button->button == GDK_BUTTON_SECONDARY)
+      //  {
+          gtk_menu_popup (menu, NULL, NULL, NULL, NULL, 
+                          event_button->button, event_button->time);
+          return TRUE;
+	  //  }
+    }
+
+  return FALSE;
+}
+
+void
+on_popup_handler                    (GtkMenuItem     *menuitem,
+                                        gpointer         user_data)
+{
+  TRACE_1("clicked");
+}
+
+
+
 void
 on_fileNew_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
