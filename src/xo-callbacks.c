@@ -63,7 +63,7 @@ my_popup_handler (GtkWidget *widget, GdkEvent *event)
   TRACE_1("clicked my");
 
   g_return_val_if_fail (widget != NULL, FALSE);
-  //g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
+  g_return_val_if_fail (GTK_IS_MENU (widget), FALSE);
   g_return_val_if_fail (event != NULL, FALSE);
 
   TRACE_1("past asserts");
@@ -74,13 +74,21 @@ my_popup_handler (GtkWidget *widget, GdkEvent *event)
   //menu = (GTK_MENU*) (widget);
   menu = GTK_MENU (widget);
 
+  TRACE_1("got menu?");
+
   if (event->type == GDK_BUTTON_PRESS)
     {
+    TRACE_1("was a button press");
+
       event_button = (GdkEventButton *) event;
       //if (event_button->button == GDK_BUTTON_SECONDARY)
       //  {
+      TRACE_1("popping up?");
+
           gtk_menu_popup (menu, NULL, NULL, NULL, NULL, 
                           event_button->button, event_button->time);
+      TRACE_1("after popping up?");
+
           return TRUE;
 	  //  }
     }

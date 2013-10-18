@@ -378,7 +378,7 @@ create_winMain (void)
   gtk_toolbar_set_style (GTK_TOOLBAR (toolbarMain), GTK_TOOLBAR_ICONS);
   tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
 
-  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
+  gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
   gtk_widget_show (menubar);
   gtk_container_add (GTK_CONTAINER (toolbarMain), menubar);
 
@@ -2511,7 +2511,7 @@ create_winMain (void)
                     G_CALLBACK (on_fileNew_activate),
                     NULL);
   // cbm
-  g_signal_connect_swapped ((gpointer) menuButton, "clicked",
+  g_signal_connect_swapped ((gpointer) menuButton, "button_press_event",
                     G_CALLBACK (my_popup_handler),
 		    menuFile_menu);  // menubar?, fileMenu
   /* connect our handler which will popup the menu */
