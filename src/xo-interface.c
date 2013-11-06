@@ -355,7 +355,9 @@ create_winMain (void)
   winMain = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_window_set_title (GTK_WINDOW (winMain), _("Xournal"));
   // todo: some ifdef for recent gtk?
+  printf("CBM: hide titlebar\n");
   gtk_window_set_hide_titlebar_when_maximized(GTK_WINDOW (winMain), TRUE);
+  printf("CBM: hide titlebar\n");
 
   vboxMain = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
   //vboxMain = gtk_vbox_new (FALSE, 0);
