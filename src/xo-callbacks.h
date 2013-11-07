@@ -45,6 +45,10 @@ on_fileSave_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
 void
+on_tbpenToggle_activate                (GtkToggleButton* tog,
+                                        gpointer         user_data);
+
+void
 on_fileSaveAs_activate                 (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 

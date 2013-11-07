@@ -75,10 +75,14 @@ my_popup_handler (GtkWidget *widget, GdkEvent *event)
   menu = GTK_MENU (widget);
 
   TRACE_1("got menu?");
+  TRACE_3("event->type: %d, %d\n", event->type, GDK_BUTTON_PRESS);
 
   if (event->type == GDK_BUTTON_PRESS)
     {
     TRACE_1("was a button press");
+
+    gtk_widget_hide(GET_COMPONENT("toolbarPen"));
+
 
       event_button = (GdkEventButton *) event;
       //if (event_button->button == GDK_BUTTON_SECONDARY)
@@ -250,11 +254,26 @@ on_fileOpen_activate                   (GtkMenuItem     *menuitem,
 
 
 void
+on_tbpenToggle_activate                (GtkToggleButton* tog,
+                                        gpointer         user_data)
+{
+  gboolean tf;
+  tf = gtk_toggle_button_get_active(tog);
+
+  if(tf) {
+    gtk_widget_show(GET_COMPONENT("toolbarPen"));
+  } else {
+    gtk_widget_hide(GET_COMPONENT("toolbarPen"));
+  }
+}
+
+
+void
 on_fileSave_activate                   (GtkMenuItem     *menuitem,
                                         gpointer         user_data)
 {
   GtkWidget *dialog;
-  
+
   end_text();
   if (ui.filename == NULL) {
     on_fileSaveAs_activate(menuitem, user_data);

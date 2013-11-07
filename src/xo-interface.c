@@ -33,8 +33,11 @@
 GtkWidget*
 create_winMain (void)
 {
+  //GtkWidget *headerbar;
+  GtkStyleContext *gsc;
   GtkWidget *winMain;
   GtkWidget *vboxMain;
+  GtkWidget *menubar_outer;
   GtkWidget *menubar;
   GtkWidget *menuFile;
   GtkWidget *menuFile_menu;
@@ -262,11 +265,12 @@ create_winMain (void)
   GtkWidget *menuHelp_menu;
   GtkWidget *helpIndex;
   GtkWidget *helpAbout;
-  GtkWidget *toolbarMain;
+  //GtkWidget *toolbarMain;
+  GtkHeaderBar *toolbarMain;
   GtkIconSize tmp_toolbar_icon_size;
   GtkWidget *saveButton;
-  GtkWidget *newButton;
-  GtkWidget *openButton;
+  //GtkWidget *newButton;
+  //GtkWidget *openButton;
   GtkWidget *toolitem11;
   GtkWidget *vseparator1;
   GtkWidget *buttonCut;
@@ -278,10 +282,10 @@ create_winMain (void)
   GtkWidget *buttonRedo;
   GtkWidget *toolitem13;
   GtkWidget *vseparator3;
-  GtkWidget *buttonFirstPage;
+  //GtkWidget *buttonFirstPage;
   GtkWidget *buttonPreviousPage;
   GtkWidget *buttonNextPage;
-  GtkWidget *buttonLastPage;
+  //GtkWidget *buttonLastPage;
   GtkWidget *toolitem14;
   GtkWidget *vseparator4;
   GtkWidget *buttonZoomOut;
@@ -353,10 +357,13 @@ create_winMain (void)
   accel_group = gtk_accel_group_new ();
 
   winMain = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-  gtk_window_set_title (GTK_WINDOW (winMain), _("Xournal"));
+  //gtk_window_set_title (GTK_WINDOW (winMain), _("Xournal"));
   // todo: some ifdef for recent gtk?
   printf("CBM: hide titlebar\n");
-  gtk_window_set_hide_titlebar_when_maximized(GTK_WINDOW (winMain), TRUE);
+  //gtk_window_set_hide_titlebar_when_maximized(GTK_WINDOW (winMain), TRUE);
+  //gtk_window_set_decorated(GTK_WINDOW (winMain), FALSE);
+  // can't do it here, no toolbar yet
+  //gtk_window_set_titlebar(GTK_WINDOW (winMain), toolbarMain);
   printf("CBM: hide titlebar\n");
 
   vboxMain = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
@@ -364,25 +371,8 @@ create_winMain (void)
   gtk_widget_show (vboxMain);
   gtk_container_add (GTK_CONTAINER (winMain), vboxMain);
 
-  menubar = gtk_menu_bar_new ();
-  GtkStyleContext *gsc;
-  gsc = gtk_widget_get_style_context(menubar);
-  gtk_style_context_add_class(gsc, "button");
-  //gtk_widget_show (menubar);
-
-  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
-
-  toolbarMain = gtk_toolbar_new ();
-  gtk_widget_show (toolbarMain);
-  gtk_box_pack_start (GTK_BOX (vboxMain), toolbarMain, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbarMain), GTK_TOOLBAR_ICONS);
-  tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
-
-  gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
-  gtk_widget_show (menubar);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), menubar);
-
-  //GtkToolItem *menuButton;
+  // cbm: todo: playing with menubutton
+  /*
   GtkWidget *menuButton;
   menuButton = (GtkWidget*) gtk_tool_button_new_from_stock (GTK_STOCK_OK);
   gtk_tool_button_set_label((GtkToolButton*) menuButton, "menu button");
@@ -394,13 +384,24 @@ create_winMain (void)
   GtkActionGroup *action_group;
   GtkAction *action;
   //action = gtk_action_group_get_action (action_group, "PageMenu");
-  
+
   //gtk_activatable_set_related_action (GTK_ACTIVATABLE (menuButton),
   //action);
   gtk_widget_show_all (menuButton);
   //gtk_container_add (GTK_CONTAINER (toolbarMain), (GtkWidget*) menuButton);
   gtk_container_add (GTK_CONTAINER (toolbarMain), menuButton);
-  
+  */
+
+  //menubar_outer = gtk_menu_bar_new ();
+  //gtk_widget_show (menubar_outer);
+  // cbm: todo: a quick way to do a menubutton is just to change the style
+  // (and have a single menu item)
+  //gsc = gtk_widget_get_style_context(menubar);
+  //gtk_style_context_add_class(gsc, "button");
+  menubar = gtk_menu_bar_new ();
+  gtk_widget_show (menubar);
+  //gtk_container_add (GTK_CONTAINER (menubar_outer), menubar);
+
 
   menuFile = gtk_menu_item_new_with_mnemonic (_("_File"));
   gtk_widget_show (menuFile);
@@ -881,7 +882,7 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (menuJournal_menu), journalSetAsDefault);
 
   menuTools = gtk_menu_item_new_with_mnemonic (_("_Tools"));
-  gtk_widget_show (menuTools);
+  //gtk_widget_show (menuTools);
   gtk_container_add (GTK_CONTAINER (menubar), menuTools);
 
   menuTools_menu = gtk_menu_new ();
@@ -1462,6 +1463,7 @@ create_winMain (void)
   gtk_widget_show (optionsSavePreferences);
   gtk_container_add (GTK_CONTAINER (menuOptions_menu), optionsSavePreferences);
 
+  /* cbm: no help menu
   menuHelp = gtk_menu_item_new_with_mnemonic (_("_Help"));
   gtk_widget_show (menuHelp);
   gtk_container_add (GTK_CONTAINER (menubar), menuHelp);
@@ -1476,29 +1478,57 @@ create_winMain (void)
   helpAbout = gtk_menu_item_new_with_mnemonic (_("_About"));
   gtk_widget_show (helpAbout);
   gtk_container_add (GTK_CONTAINER (menuHelp_menu), helpAbout);
+  */
 
 
-  // toolbar was here originally
+  /*
+  printf("CBM: headerbar\n");
+  headerbar = gtk_header_bar_new();
+  gtk_header_bar_set_title(headerbar, _("Xournal"));
+  gtk_header_bar_set_subtitle(headerbar, "file name goes here");
+  gtk_widget_show(headerbar);
+  gtk_header_bar_set_show_close_button(headerbar, TRUE);
+  //gtk_container_add(GTK_CONTAINER (vboxMain), headerbar);
+  gtk_box_pack_start (GTK_BOX (vboxMain), headerbar, FALSE, FALSE, 0);
+  printf("CBM: headerbar\n");
+  */
+
+
+  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
+
+  //toolbarMain = gtk_toolbar_new ();
+  toolbarMain = gtk_header_bar_new ();
+  gtk_header_bar_set_title(toolbarMain, "File name goes here");
+  gtk_header_bar_set_subtitle(toolbarMain, "status");
+  gtk_header_bar_set_show_close_button(toolbarMain, TRUE);
+  gtk_window_set_titlebar(GTK_WINDOW (winMain), toolbarMain);
+  gtk_widget_show (toolbarMain);
+  gtk_box_pack_start (GTK_BOX (vboxMain), toolbarMain, FALSE, FALSE, 0);
+  //gtk_toolbar_set_style (GTK_TOOLBAR (toolbarMain), GTK_TOOLBAR_ICONS);
+  //tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
+  //tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarMain));
+
+  //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
+  //gtk_widget_show (menubar);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), menubar);
+  gtk_header_bar_pack_end(toolbarMain, menubar);
+
+
+  GtkToggleButton* tbpenToggle;
+  tbpenToggle = gtk_toggle_button_new_with_label("P");
+  gtk_widget_show(tbpenToggle);
+  gtk_toggle_button_set_active(tbpenToggle, TRUE);
+  gtk_header_bar_pack_end(toolbarMain, tbpenToggle);
 
   saveButton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-save");
   gtk_widget_show (saveButton);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), saveButton);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), saveButton);
+  gtk_header_bar_pack_end(toolbarMain, saveButton);
   gtk_widget_set_tooltip_text(saveButton, _("Save"));
   //gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (saveButton), tooltips, _("Save"), NULL);
 
 
-  newButton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-new");
-  gtk_widget_show (newButton);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), newButton);
-  gtk_widget_set_tooltip_text(newButton, _("New"));
-  //gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (newButton), tooltips, _("New"), NULL);
-
-  openButton = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-open");
-  gtk_widget_show (openButton);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), openButton);
-  gtk_widget_set_tooltip_text(openButton, _("Open"));
-  //gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (openButton), tooltips, _("Open"), NULL);
-
+  /*
   toolitem11 = (GtkWidget*) gtk_tool_item_new ();
   gtk_widget_show (toolitem11);
   gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem11);
@@ -1506,7 +1536,53 @@ create_winMain (void)
   vseparator1 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);
   gtk_widget_show (vseparator1);
   gtk_container_add (GTK_CONTAINER (toolitem11), vseparator1);
+  */
 
+
+  buttonPreviousPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-go-back");
+  gtk_widget_show (buttonPreviousPage);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonPreviousPage);
+  gtk_header_bar_pack_start (toolbarMain, buttonPreviousPage);
+  gtk_widget_set_tooltip_text(buttonPreviousPage, _("Previous Page"));
+  //gtk_tool_item_set_tooltip (buttonPreviousPage, tooltips, _("Previous Page"), NULL);
+
+  //labelPage = gtk_label_new (_("  Page  "));
+  //gtk_widget_show (labelPage);
+  //gtk_header_bar_pack_start (toolbarMain, labelPage);
+  //gtk_box_pack_start (GTK_BOX (hbox1), labelPage, FALSE, FALSE, 0);
+
+  spinPageNo_adj = gtk_adjustment_new (1, 1, 1, 1, 0, 0);
+  spinPageNo = gtk_spin_button_new (GTK_ADJUSTMENT (spinPageNo_adj), 1, 0);
+  gtk_widget_show (spinPageNo);
+  gtk_header_bar_pack_start (toolbarMain, spinPageNo);
+  //gtk_box_pack_start (GTK_BOX (hbox1), spinPageNo, FALSE, TRUE, 0);
+  gtk_widget_set_tooltip_text(spinPageNo, _("Set page number"));
+  //gtk_tooltips_set_tip (tooltips, spinPageNo, _("Set page number"), NULL);
+  gtk_spin_button_set_numeric (GTK_SPIN_BUTTON (spinPageNo), TRUE);
+  gtk_spin_button_set_snap_to_ticks (GTK_SPIN_BUTTON (spinPageNo), TRUE);
+
+  labelNumpages = gtk_label_new (_(" of n"));
+  gtk_widget_show (labelNumpages);
+  //gtk_box_pack_start (GTK_BOX (hbox1), labelNumpages, FALSE, FALSE, 0);
+  gtk_header_bar_pack_start (toolbarMain, labelNumpages);
+
+
+  buttonNextPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-go-forward");
+  gtk_widget_show (buttonNextPage);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonNextPage);
+  gtk_header_bar_pack_start (toolbarMain, buttonNextPage);
+  gtk_widget_set_tooltip_text(buttonNextPage, _("Next Page"));
+  //gtk_tool_item_set_tooltip (buttonNextPage, tooltips, _("Next Page"), NULL);
+
+  toolitem12 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem12);
+  gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem12);
+
+  vseparator2 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);//gtk_vseparator_new ();
+  gtk_widget_show (vseparator2);
+  gtk_container_add (GTK_CONTAINER (toolitem12), vseparator2);
+
+  /* cut/copy/paste */
   buttonCut = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-cut");
   gtk_widget_show (buttonCut);
   gtk_container_add (GTK_CONTAINER (toolbarMain), buttonCut);
@@ -1525,13 +1601,14 @@ create_winMain (void)
   gtk_widget_set_tooltip_text(buttonPaste, _("Paste"));
   //gtk_tool_item_set_tooltip (GTK_TOOL_ITEM (buttonPaste), tooltips, _("Paste"), NULL);
 
-  toolitem12 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem12);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem12);
+  toolitem13 = (GtkWidget*) gtk_tool_item_new ();
+  gtk_widget_show (toolitem13);
+  gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem13);
 
-  vseparator2 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);//gtk_vseparator_new ();
-  gtk_widget_show (vseparator2);
-  gtk_container_add (GTK_CONTAINER (toolitem12), vseparator2);
+  vseparator3 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);//gtk_vseparator_new ();
+  gtk_widget_show (vseparator3);
+  gtk_container_add (GTK_CONTAINER (toolitem13), vseparator3);
+
 
   buttonUndo = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-undo");
   gtk_widget_show (buttonUndo);
@@ -1545,38 +1622,8 @@ create_winMain (void)
   gtk_widget_set_tooltip_text(buttonRedo, _("Redo"));
   //gtk_tool_item_set_tooltip (buttonRedo, tooltips, _("Redo"), NULL);
 
-  toolitem13 = (GtkWidget*) gtk_tool_item_new ();
-  gtk_widget_show (toolitem13);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem13);
 
-  vseparator3 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);//gtk_vseparator_new ();
-  gtk_widget_show (vseparator3);
-  gtk_container_add (GTK_CONTAINER (toolitem13), vseparator3);
-
-  buttonFirstPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-goto-first");
-  gtk_widget_show (buttonFirstPage);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonFirstPage);
-  gtk_widget_set_tooltip_text(buttonFirstPage, _("First Page"));
-  //gtk_tool_item_set_tooltip (buttonFirstPage, tooltips, _("First Page"), NULL);
-
-  buttonPreviousPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-go-back");
-  gtk_widget_show (buttonPreviousPage);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonPreviousPage);
-  gtk_widget_set_tooltip_text(buttonPreviousPage, _("Previous Page"));
-  //gtk_tool_item_set_tooltip (buttonPreviousPage, tooltips, _("Previous Page"), NULL);
-
-  buttonNextPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-go-forward");
-  gtk_widget_show (buttonNextPage);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonNextPage);
-  gtk_widget_set_tooltip_text(buttonNextPage, _("Next Page"));
-  //gtk_tool_item_set_tooltip (buttonNextPage, tooltips, _("Next Page"), NULL);
-
-  buttonLastPage = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-goto-last");
-  gtk_widget_show (buttonLastPage);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonLastPage);
-  gtk_widget_set_tooltip_text(buttonLastPage, _("Last Page"));
-  //gtk_tool_item_set_tooltip (buttonLastPage, tooltips, _("Last Page"), NULL);
-
+  /*
   toolitem14 = (GtkWidget*) gtk_tool_item_new ();
   gtk_widget_show (toolitem14);
   gtk_container_add (GTK_CONTAINER (toolbarMain), toolitem14);
@@ -1584,53 +1631,64 @@ create_winMain (void)
   vseparator4 = gtk_separator_new (GTK_ORIENTATION_VERTICAL);//gtk_vseparator_new ();
   gtk_widget_show (vseparator4);
   gtk_container_add (GTK_CONTAINER (toolitem14), vseparator4);
+  */
 
   buttonZoomOut = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-out");
   gtk_widget_show (buttonZoomOut);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonZoomOut);
+  gtk_header_bar_pack_end(toolbarMain, buttonZoomOut);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonZoomOut);
   gtk_widget_set_tooltip_text(buttonZoomOut, _("Zoom Out"));
   //gtk_tool_item_set_tooltip (buttonZoomOut, tooltips, _("Zoom Out"), NULL);
 
   buttonPageWidth = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-fit");
   gtk_widget_show (buttonPageWidth);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonPageWidth);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonPageWidth);
+  gtk_header_bar_pack_end(toolbarMain, buttonPageWidth);
   gtk_widget_set_tooltip_text(buttonPageWidth, _("Page Width"));
   //gtk_tool_item_set_tooltip (buttonPageWidth, tooltips, _("Page Width"), NULL);
   gtk_widget_set_tooltip_text(buttonPageWidth, FALSE);
 
   buttonZoomIn = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-in");
   gtk_widget_show (buttonZoomIn);
-  gtk_container_add (GTK_CONTAINER (toolbarMain),buttonZoomIn);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain),buttonZoomIn);
+  gtk_header_bar_pack_end(toolbarMain, buttonZoomIn);
   gtk_widget_set_tooltip_text(buttonZoomIn, _("Zoom In"));
   //gtk_tool_item_set_tooltip (buttonZoomIn, tooltips, _("Zoom In"), NULL);
 
   buttonNormalSize = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-100");
   gtk_widget_show (buttonNormalSize);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonNormalSize);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonNormalSize);
+  gtk_header_bar_pack_end(toolbarMain, buttonNormalSize);
   gtk_widget_set_tooltip_text(buttonNormalSize, _("Normal Size"));
   //gtk_tool_item_set_tooltip (buttonNormalSize, tooltips, _("Normal Size"), NULL);
 
-  buttonZoomSet = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-find");
-  gtk_widget_show (buttonZoomSet);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonZoomSet);
-  gtk_widget_set_tooltip_text(buttonZoomSet, _("Set Zoom"));
+  //buttonZoomSet = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-find");
+  //gtk_widget_show (buttonZoomSet);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonZoomSet);
+  //gtk_widget_set_tooltip_text(buttonZoomSet, _("Set Zoom"));
   //gtk_tool_item_set_tooltip (buttonZoomSet, tooltips, _("Set Zoom"), NULL);
 
-  buttonFullscreen = (GtkWidget*) gtk_toggle_tool_button_new ();
-  gtk_tool_button_set_label (GTK_TOOL_BUTTON (buttonFullscreen), "");
-  tmp_image = create_pixmap (winMain, "fullscreen.png");
-  gtk_widget_show (tmp_image);
-  gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (buttonFullscreen), tmp_image);
-  gtk_widget_show (buttonFullscreen);
-  gtk_container_add (GTK_CONTAINER (toolbarMain), buttonFullscreen);
-  gtk_widget_set_tooltip_text(buttonFullscreen, _("Toggle Fullscreen"));
+  //buttonFullscreen = (GtkWidget*) gtk_toggle_tool_button_new ();
+  //gtk_tool_button_set_label (GTK_TOOL_BUTTON (buttonFullscreen), "");
+  //tmp_image = create_pixmap (winMain, "fullscreen.png");
+  //gtk_widget_show (tmp_image);
+  //gtk_tool_button_set_icon_widget (GTK_TOOL_BUTTON (buttonFullscreen), tmp_image);
+  //gtk_widget_show (buttonFullscreen);
+  //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonFullscreen);
+  //gtk_widget_set_tooltip_text(buttonFullscreen, _("Toggle Fullscreen"));
   //gtk_tool_item_set_tooltip (buttonFullscreen, tooltips, _("Toggle Fullscreen"), NULL);
 
   toolbarPen = gtk_toolbar_new ();
   gtk_widget_show (toolbarPen);
   gtk_box_pack_start (GTK_BOX (vboxMain), toolbarPen, FALSE, FALSE, 0);
-  gtk_toolbar_set_style (GTK_TOOLBAR (toolbarPen), GTK_TOOLBAR_ICONS);
+  //gtk_toolbar_set_style (GTK_TOOLBAR (toolbarPen), GTK_TOOLBAR_ICONS);
+  /* cbm: add gnome3 toolbar style */
+  gsc = gtk_widget_get_style_context(toolbarPen);
+  gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_PRIMARY_TOOLBAR);
+
   tmp_toolbar_icon_size = gtk_toolbar_get_icon_size (GTK_TOOLBAR (toolbarPen));
+  gtk_widget_hide(toolbarPen);
+
 
   buttonPen = (GtkWidget*) gtk_radio_tool_button_new (NULL);
   gtk_tool_button_set_label (GTK_TOOL_BUTTON (buttonPen), _("Pencil"));
@@ -2045,6 +2103,7 @@ create_winMain (void)
   gtk_widget_show (hbox1);
   gtk_box_pack_start (GTK_BOX (vboxMain), hbox1, FALSE, FALSE, 0);
 
+  /*
   labelPage = gtk_label_new (_("  Page  "));
   gtk_widget_show (labelPage);
   gtk_box_pack_start (GTK_BOX (hbox1), labelPage, FALSE, FALSE, 0);
@@ -2066,6 +2125,9 @@ create_winMain (void)
   gtk_widget_show (vseparator9);
   gtk_box_pack_start (GTK_BOX (hbox1), vseparator9, FALSE, TRUE, 6);
 
+  */
+
+  /* cbm: can do this layer stuff from menus
   labelLayer = gtk_label_new (_("  Layer:  "));
   gtk_widget_show (labelLayer);
   gtk_box_pack_start (GTK_BOX (hbox1), labelLayer, FALSE, FALSE, 0);
@@ -2077,6 +2139,7 @@ create_winMain (void)
   statusbar = gtk_statusbar_new ();
   gtk_widget_show (statusbar);
   gtk_box_pack_start (GTK_BOX (hbox1), statusbar, TRUE, TRUE, 0);
+  */
 
   // No longer needed in gtk3
   //gtk_statusbar_set_has_resize_grip (GTK_STATUSBAR (statusbar), FALSE);
@@ -2507,20 +2570,20 @@ create_winMain (void)
   g_signal_connect ((gpointer) saveButton, "clicked",
                     G_CALLBACK (on_fileSave_activate),
                     NULL);
-  g_signal_connect ((gpointer) newButton, "clicked",
-                    G_CALLBACK (on_fileNew_activate),
+  g_signal_connect ((gpointer) tbpenToggle, "toggled",
+                    G_CALLBACK (on_tbpenToggle_activate),
                     NULL);
-  // cbm
+
+  // cbm: playing with menu button
+  /*
   g_signal_connect_swapped ((gpointer) menuButton, "button_press_event",
                     G_CALLBACK (my_popup_handler),
+			    //menubar);  // menubar?, fileMenu
 		    menuFile_menu);  // menubar?, fileMenu
-  /* connect our handler which will popup the menu */
   //g_signal_connect_swapped (winMain, "button_press_event",
   //G_CALLBACK (my_popup_handler), menubar);
+  */
 
-  g_signal_connect ((gpointer) openButton, "clicked",
-                    G_CALLBACK (on_fileOpen_activate),
-                    NULL);
   g_signal_connect ((gpointer) buttonCut, "clicked",
                     G_CALLBACK (on_editCut_activate),
                     NULL);
@@ -2536,17 +2599,11 @@ create_winMain (void)
   g_signal_connect ((gpointer) buttonRedo, "clicked",
                     G_CALLBACK (on_editRedo_activate),
                     NULL);
-  g_signal_connect ((gpointer) buttonFirstPage, "clicked",
-                    G_CALLBACK (on_viewFirstPage_activate),
-                    NULL);
   g_signal_connect ((gpointer) buttonPreviousPage, "clicked",
                     G_CALLBACK (on_viewPreviousPage_activate),
                     NULL);
   g_signal_connect ((gpointer) buttonNextPage, "clicked",
                     G_CALLBACK (on_viewNextPage_activate),
-                    NULL);
-  g_signal_connect ((gpointer) buttonLastPage, "clicked",
-                    G_CALLBACK (on_viewLastPage_activate),
                     NULL);
   g_signal_connect ((gpointer) buttonZoomOut, "clicked",
                     G_CALLBACK (on_viewZoomOut_activate),
@@ -2560,12 +2617,12 @@ create_winMain (void)
   g_signal_connect ((gpointer) buttonNormalSize, "clicked",
                     G_CALLBACK (on_viewNormalSize_activate),
                     NULL);
-  g_signal_connect ((gpointer) buttonZoomSet, "clicked",
-                    G_CALLBACK (on_viewSetZoom_activate),
-                    NULL);
-  g_signal_connect ((gpointer) buttonFullscreen, "toggled",
-                    G_CALLBACK (on_viewFullscreen_activate),
-                    NULL);
+  //g_signal_connect ((gpointer) buttonZoomSet, "clicked",
+  //                  G_CALLBACK (on_viewSetZoom_activate),
+  //                  NULL);
+  //g_signal_connect ((gpointer) buttonFullscreen, "toggled",
+  //                  G_CALLBACK (on_viewFullscreen_activate),
+  //                  NULL);
   g_signal_connect ((gpointer) buttonPen, "toggled",
                     G_CALLBACK (on_toolsPen_activate),
                     NULL);
@@ -2879,9 +2936,9 @@ create_winMain (void)
   GLADE_HOOKUP_OBJECT (winMain, helpAbout, "helpAbout");
   GLADE_HOOKUP_OBJECT (winMain, toolbarMain, "toolbarMain");
   GLADE_HOOKUP_OBJECT (winMain, saveButton, "saveButton");
-  GLADE_HOOKUP_OBJECT (winMain, newButton, "newButton");
+  //GLADE_HOOKUP_OBJECT (winMain, newButton, "newButton");
   //GLADE_HOOKUP_OBJECT (winMain, menuButton, "menuButton");
-  GLADE_HOOKUP_OBJECT (winMain, openButton, "openButton");
+  //GLADE_HOOKUP_OBJECT (winMain, openButton, "openButton");
   GLADE_HOOKUP_OBJECT (winMain, toolitem11, "toolitem11");
   GLADE_HOOKUP_OBJECT (winMain, vseparator1, "vseparator1");
   GLADE_HOOKUP_OBJECT (winMain, buttonCut, "buttonCut");
@@ -2893,10 +2950,8 @@ create_winMain (void)
   GLADE_HOOKUP_OBJECT (winMain, buttonRedo, "buttonRedo");
   GLADE_HOOKUP_OBJECT (winMain, toolitem13, "toolitem13");
   GLADE_HOOKUP_OBJECT (winMain, vseparator3, "vseparator3");
-  GLADE_HOOKUP_OBJECT (winMain, buttonFirstPage, "buttonFirstPage");
   GLADE_HOOKUP_OBJECT (winMain, buttonPreviousPage, "buttonPreviousPage");
   GLADE_HOOKUP_OBJECT (winMain, buttonNextPage, "buttonNextPage");
-  GLADE_HOOKUP_OBJECT (winMain, buttonLastPage, "buttonLastPage");
   GLADE_HOOKUP_OBJECT (winMain, toolitem14, "toolitem14");
   GLADE_HOOKUP_OBJECT (winMain, vseparator4, "vseparator4");
   GLADE_HOOKUP_OBJECT (winMain, buttonZoomOut, "buttonZoomOut");
