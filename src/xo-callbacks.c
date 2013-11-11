@@ -3251,6 +3251,8 @@ on_spinPageNo_value_changed            (GtkSpinButton   *spinbutton,
   /* in preparation for end_text(), send focus to the canvas if it's not ours.
      (avoid issues with Gtk trying to send focus to the dead text widget) */
 
+  printf("CBM DEBUG: enter spin change\n");
+
   if (!gtk_widget_has_focus(GTK_WIDGET(spinbutton)))
     gtk_widget_grab_focus(GTK_WIDGET(canvas));
   end_text();
