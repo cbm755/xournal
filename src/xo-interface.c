@@ -1813,7 +1813,7 @@ create_winMain (void)
   /* cbm: todo: make it insensitive */
   gsc = gtk_widget_get_style_context (labelNumpages);
   gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_ENTRY);
-
+  g_object_set (labelNumpages, "sensitive", FALSE, NULL);
   //gtk_box_pack_start (GTK_BOX (hbox1), labelNumpages, FALSE, FALSE, 0);
   //gtk_header_bar_pack_start (toolbarMain, labelNumpages);
   gtk_box_pack_start (GTK_BOX (button_group_box), labelNumpages, TRUE, TRUE, 0);

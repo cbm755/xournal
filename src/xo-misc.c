@@ -1936,17 +1936,21 @@ void update_toolbar_and_menu(void)
 void update_file_name(char *filename)
 {
   gchar tmp[100], *p;
+  gchar tmp2[100];
   if (ui.filename != NULL) g_free(ui.filename);
   ui.filename = filename;
   if (filename == NULL) {
     gtk_window_set_title(GTK_WINDOW (winMain), _("Xournal"));
+    gtk_header_bar_set_title(GET_COMPONENT("toolbarMain"), NULL);
     return;
   }
   p = g_utf8_strrchr(filename, -1, '/');
   if (p == NULL) p = filename; 
   else p = g_utf8_next_char(p);
   g_snprintf(tmp, 100, _("Xournal - %s"), p);
+  g_snprintf(tmp2, 100, "%s", p);
   gtk_window_set_title(GTK_WINDOW (winMain), tmp);
+  gtk_header_bar_set_title(GET_COMPONENT("toolbarMain"), tmp2);
   new_mru_entry(filename);
 
   if (filename[0]=='/') {
