@@ -1753,7 +1753,11 @@ void update_page_stuff(void)
   GtkComboBoxText *layerbox;
   int i;
   GList *pglist;
+#ifdef ENTRY_NOSPIN
+  GtkEntry *entry;
+#else
   GtkSpinButton *spin;
+#endif
   struct Page *pg;
   double vertpos, maxwidth;
   
@@ -1801,14 +1805,20 @@ void update_page_stuff(void)
     goo_canvas_set_bounds(canvas, 0, 0, ui.cur_page->width, ui.cur_page->height);
   }
 
-  // update the page / layer info at bottom of screen
-
+  // update the page / layer info
+#ifdef ENTRY_NOSPIN
+  entry = GTK_ENTRY(GET_COMPONENT("entryPageNo"));
+  ui.in_update_page_stuff = TRUE; // avoid a bad retroaction
+  g_snprintf(tmp, 10, "%d", ui.pageno+1);
+  gtk_entry_set_text(entry, tmp);
+#else
   spin = GTK_SPIN_BUTTON(GET_COMPONENT("spinPageNo"));
   ui.in_update_page_stuff = TRUE; // avoid a bad retroaction
   gtk_spin_button_set_range(spin, 1, journal.npages+1);
     /* npages+1 will be used to create a new page at end */
   gtk_spin_button_set_value(spin, ui.pageno+1);
-  g_snprintf(tmp, 10, _(" of %d"), journal.npages);
+#endif
+  g_snprintf(tmp, 10, _("of %d"), journal.npages);
   gtk_label_set_text(GTK_LABEL(GET_COMPONENT("labelNumpages")), tmp);
 
   layerbox = GTK_COMBO_BOX_TEXT(GET_COMPONENT("comboLayer"));
@@ -2752,6 +2762,39 @@ gboolean intercept_activate_events(GtkWidget *w, GdkEvent *ev, gpointer data)
        propagated further ... */
     return TRUE;
   }
+
+#ifdef ENTRY_NOSPIN
+  if (w == GET_COMPONENT("entryPageNo")) {
+    /* we let the spin button take care of itself, and don't steal its focus,
+       unless the user presses Esc or Tab (in those cases we intervene) */
+    if (ev->type != GDK_KEY_PRESS) {
+      return FALSE;
+    } else if (ev->key.keyval == GDK_Escape) {
+      gchar tmp[10];
+      g_snprintf(tmp, 10, "%d", ui.pageno+1);
+      gtk_entry_set_text(w, tmp);
+      /* cbm: perhaps the entry wants to do something further but
+	 returning false here seems to be functionally the same as
+	 reset_focus() then returning true */
+      //return FALSE;
+      reset_focus();
+      return TRUE;
+    } else if (ev->key.keyval == GDK_Tab || ev->key.keyval == GDK_ISO_Left_Tab) {
+      // cbm: I made this behave like escape: reset the text and back to button
+      printf("CBM: pressed tab in the entry\n");
+      gchar tmp[10];
+      g_snprintf(tmp, 10, "%d", ui.pageno+1);
+      gtk_entry_set_text(w, tmp);
+      reset_focus();
+      return TRUE;
+    } else {
+      return FALSE; // let the text entry process it
+      /* cbm: other cases that don't quite work are the up/down arrow,
+	 pgup/pgdn but not sure I can be bothered: it works well
+	 enough in practice */
+    }
+  }
+#else
   if (w == GET_COMPONENT("spinPageNo")) {
     /* we let the spin button take care of itself, and don't steal its focus,
        unless the user presses Esc or Tab (in those cases we intervene) */
@@ -2761,6 +2804,7 @@ gboolean intercept_activate_events(GtkWidget *w, GdkEvent *ev, gpointer data)
     else if (ev->key.keyval != GDK_Tab && ev->key.keyval != GDK_ISO_Left_Tab)
        return FALSE; // let the spin button process it
   }
+#endif
 
   // otherwise, we want to make sure the canvas or text item gets focus back...
   reset_focus();  

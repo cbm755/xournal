@@ -472,9 +472,15 @@ void
 on_vscroll_changed                     (GtkAdjustment   *adjustment,
                                         gpointer        user_data);
 
+#ifdef ENTRY_NOSPIN
+void
+on_entryPageNo_activate                (GtkEntry   *entry,
+                                        gpointer         user_data);
+#else
 void
 on_spinPageNo_value_changed            (GtkSpinButton   *spinbutton,
                                         gpointer         user_data);
+#endif
 
 void
 on_journalDefaultBackground_activate   (GtkMenuItem     *menuitem,

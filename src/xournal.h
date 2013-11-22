@@ -19,6 +19,9 @@
 #include <goocanvas.h>
 #include <poppler/glib/poppler.h>
 
+/* cbm: use a gtkEntry instead of a spinbutton for pages */
+#define ENTRY_NOSPIN
+
 // #define INPUT_DEBUG
 /* uncomment this line if you experience event-processing problems
    and want to list the input events received by xournal. Caution, lots

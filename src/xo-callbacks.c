@@ -2585,7 +2585,7 @@ on_canvas_button_press_event           (GtkWidget       *widget,
 #endif
   struct Item *item;
   GdkEvent scroll_event;
-  
+
 #ifdef INPUT_DEBUG
   printf("DEBUG: ButtonPress (%s) type %d (x,y)=(%.2f,%.2f), button %d, modifier %x\n", 
 	 event->device->name, 
@@ -2612,7 +2612,15 @@ on_canvas_button_press_event           (GtkWidget       *widget,
   printf("DEBUG: slave device [%s] input source [%d]\n",
  	 gdk_device_get_name(slave), inputSource);
   // abort any page changes pending in the spin button, and take the focus
+#ifdef ENTRY_NOSPIN
+  GtkEntry *entry;
+  gchar tmp[10];
+  entry = GTK_ENTRY(GET_COMPONENT("entryPageNo"));
+  g_snprintf(tmp, 10, "%d", ui.pageno+1);
+  gtk_entry_set_text(entry, tmp);
+#else
   gtk_spin_button_set_value(GTK_SPIN_BUTTON(GET_COMPONENT("spinPageNo")), ui.pageno+1);
+#endif
   reset_focus();
     
 #ifdef asdfasdf
@@ -3240,6 +3248,43 @@ on_vscroll_changed                     (GtkAdjustment   *adjustment,
 
 }
 
+
+#ifdef ENTRY_NOSPIN
+void
+on_entryPageNo_activate              (GtkEntry   *entry,
+                                        gpointer         user_data)
+{
+  gchar *text;
+  int val;
+
+  // todo: what was this for?
+  //if (!gtk_widget_has_focus(GTK_WIDGET(spinbutton)))
+  //  gtk_widget_grab_focus(GTK_WIDGET(canvas));
+  //end_text();
+
+  text = gtk_entry_get_text(entry);
+
+  val = atoi(text) - 1;
+
+  if (val == journal.npages) { // create a page at end
+    on_journalNewPageEnd_activate(NULL, NULL);
+    reset_focus();
+    return;
+  }
+
+  if (val == ui.pageno) {
+    reset_focus();
+    return;
+  }
+  if (val < 0) val = 0;
+  if (val > journal.npages-1) val = journal.npages-1;
+  do_switch_page(val, TRUE, FALSE);
+
+  reset_focus();
+}
+
+#else
+
 void
 on_spinPageNo_value_changed            (GtkSpinButton   *spinbutton,
                                         gpointer         user_data)
@@ -3267,6 +3312,7 @@ on_spinPageNo_value_changed            (GtkSpinButton   *spinbutton,
   if (val > journal.npages-1) val = journal.npages-1;
   do_switch_page(val, TRUE, FALSE);
 }
+#endif
 
 
 void

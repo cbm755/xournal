@@ -248,9 +248,20 @@ void init_stuff (int argc, char *argv[])
   allow_all_accels();
   add_scroll_bindings();
 
+  // cbm: replacing spin with entry
+  //   done: tab, type number, enter to change pages
+  //   done: tab/click, move with left-right arrows
+  //   c.f.: handle_activate_signal in xo-misc.c
+  //   press esc: reset the text to current page no
+
   // prevent interface items from stealing focus
   // glade doesn't properly handle can_focus, so manually set it
   gtk_combo_box_set_focus_on_click(GTK_COMBO_BOX(GET_COMPONENT("comboLayer")), FALSE);
+#ifdef ENTRY_NOSPIN
+  gtk_container_forall(GTK_CONTAINER(winMain), xo_unset_focus, NULL);
+  gtk_widget_set_can_focus(GTK_WIDGET(canvas), TRUE);
+  gtk_widget_set_can_focus(GET_COMPONENT("entryPageNo"), TRUE);
+#else
   g_signal_connect(GET_COMPONENT("spinPageNo"), "activate",
           G_CALLBACK(handle_activate_signal), NULL);
   gtk_container_forall(GTK_CONTAINER(winMain), xo_unset_focus, NULL);
@@ -258,6 +269,7 @@ void init_stuff (int argc, char *argv[])
   //  GTK_WIDGET_SET_FLAGS(GTK_WIDGET(canvas), GTK_CAN_FOCUS);
   gtk_widget_set_can_focus(GET_COMPONENT("spinPageNo"), TRUE);
   //GTK_WIDGET_SET_FLAGS(GTK_WIDGET(GET_COMPONENT("spinPageNo")), GTK_CAN_FOCUS);
+#endif
 
   // install hooks on button/key/activation events to make the spinPageNo lose focus
   gtk_container_forall(GTK_CONTAINER(winMain), install_focus_hooks, NULL);

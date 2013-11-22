@@ -347,9 +347,12 @@ create_winMain (void)
   GtkWidget *scrolledwindowMain;
   GtkWidget *hbox1;
   GtkWidget *labelPage;
-  GtkAdjustment *spinPageNo_adj;
-  GtkWidget *spinPageNo;
+#ifdef ENTRY_NOSPIN
   GtkWidget *entryPageNo;
+#else
+  GtkWidget *spinPageNo;
+  GtkAdjustment *spinPageNo_adj;
+#endif
   GtkWidget *labelNumpages;
   GtkWidget *vseparator9;
   GtkWidget *labelLayer;
@@ -1780,22 +1783,26 @@ create_winMain (void)
   //gtk_box_pack_start (GTK_BOX (button_group_box), labelPage, TRUE, TRUE, 0);
 
   /* cbm: todo: drop the spinbox for an entrybox */
-//#define NOSPIN_TEST
-#ifdef NOSPIN_TEST
-  GtkEntryBuffer* entryPageNoBuf;
-  entryPageNoBuf = gtk_entry_buffer_new ("1", 1);
-  //entryPageNo = gtk_entry_new ();
-  entryPageNo = gtk_entry_new_with_buffer (entryPageNoBuf);
+ #ifdef ENTRY_NOSPIN
+  //GtkEntryBuffer* entryPageNoBuf;
+  //entryPageNoBuf = gtk_entry_buffer_new ("1", 12);
+  //entryPageNoBuf = gtk_entry_buffer_new (NULL, -1);
+  //gtk_widget_show( entryPageNoBuf);
+
+  entryPageNo = gtk_entry_new ();
+  //entryPageNo = gtk_entry_new_with_buffer (entryPageNoBuf);
+  //g_object_set(entryPageNo, "editable", TRUE);
+
+  //entryPageNo = gtk_entry_new_with_max_length(10);
   //gtk_entry_set_max_length (entryPageNo, 10);
+  //gtk_entry_set_text(GTK_ENTRY(entryPageNo), "Some text...");
+  gtk_entry_set_width_chars (GTK_ENTRY(entryPageNo), 4);
   gtk_widget_show (entryPageNo);
   gtk_widget_set_tooltip_text(entryPageNo, _("Set page number"));
   gtk_box_pack_start (GTK_BOX (button_group_box), entryPageNo, TRUE, TRUE, 0);
 #else
   spinPageNo_adj = gtk_adjustment_new (1, 1, 1, 1, 0, 0);
   spinPageNo = gtk_spin_button_new (GTK_ADJUSTMENT (spinPageNo_adj), 1, 0);
-  // cbm: todo: didn't work
-  //gsc = gtk_widget_get_style_context (spinPageNo);
-  //gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_ENTRY);
   gtk_widget_show (spinPageNo);
   //gtk_box_pack_start (GTK_BOX (hbox1), spinPageNo, FALSE, TRUE, 0);
   gtk_widget_set_tooltip_text(spinPageNo, _("Set page number"));
@@ -2950,9 +2957,9 @@ create_winMain (void)
   g_signal_connect ((gpointer) fontButton, "font_set",
                     G_CALLBACK (on_fontButton_font_set),
                     NULL);
-#ifdef NOSPIN_TEST
+#ifdef ENTRY_NOSPIN
   g_signal_connect ((gpointer) entryPageNo, "activate",
-                    G_CALLBACK (on_spinPageNo_value_changed),
+                    G_CALLBACK (on_entryPageNo_activate),
                     NULL);
 #else
   g_signal_connect ((gpointer) spinPageNo, "value_changed",
@@ -3252,8 +3259,11 @@ create_winMain (void)
   GLADE_HOOKUP_OBJECT (winMain, scrolledwindowMain, "scrolledwindowMain");
   GLADE_HOOKUP_OBJECT (winMain, hbox1, "hbox1");
   GLADE_HOOKUP_OBJECT (winMain, labelPage, "labelPage");
-  GLADE_HOOKUP_OBJECT (winMain, spinPageNo, "spinPageNo");
+#ifdef ENTRY_NOSPIN
   GLADE_HOOKUP_OBJECT (winMain, entryPageNo, "entryPageNo");
+#else
+  GLADE_HOOKUP_OBJECT (winMain, spinPageNo, "spinPageNo");
+#endif
   GLADE_HOOKUP_OBJECT (winMain, labelNumpages, "labelNumpages");
   GLADE_HOOKUP_OBJECT (winMain, vseparator9, "vseparator9");
   GLADE_HOOKUP_OBJECT (winMain, labelLayer, "labelLayer");
