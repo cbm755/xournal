@@ -1951,7 +1951,7 @@ void update_file_name(char *filename)
   ui.filename = filename;
   if (filename == NULL) {
     gtk_window_set_title(GTK_WINDOW (winMain), _("Xournal"));
-    gtk_header_bar_set_title(GET_COMPONENT("toolbarMain"), NULL);
+    gtk_header_bar_set_title(GTK_HEADER_BAR(GET_COMPONENT("toolbarMain")), NULL);
     return;
   }
   p = g_utf8_strrchr(filename, -1, '/');
@@ -1960,7 +1960,7 @@ void update_file_name(char *filename)
   g_snprintf(tmp, 100, _("Xournal - %s"), p);
   g_snprintf(tmp2, 100, "%s", p);
   gtk_window_set_title(GTK_WINDOW (winMain), tmp);
-  gtk_header_bar_set_title(GET_COMPONENT("toolbarMain"), tmp2);
+  gtk_header_bar_set_title(GTK_HEADER_BAR(GET_COMPONENT("toolbarMain")), tmp2);
   new_mru_entry(filename);
 
   if (filename[0]=='/') {
@@ -2772,7 +2772,7 @@ gboolean intercept_activate_events(GtkWidget *w, GdkEvent *ev, gpointer data)
     } else if (ev->key.keyval == GDK_Escape) {
       gchar tmp[10];
       g_snprintf(tmp, 10, "%d", ui.pageno+1);
-      gtk_entry_set_text(w, tmp);
+      gtk_entry_set_text (GTK_ENTRY (w), tmp);
       /* cbm: perhaps the entry wants to do something further but
 	 returning false here seems to be functionally the same as
 	 reset_focus() then returning true */
@@ -2784,7 +2784,7 @@ gboolean intercept_activate_events(GtkWidget *w, GdkEvent *ev, gpointer data)
       printf("CBM: pressed tab in the entry\n");
       gchar tmp[10];
       g_snprintf(tmp, 10, "%d", ui.pageno+1);
-      gtk_entry_set_text(w, tmp);
+      gtk_entry_set_text (GTK_ENTRY (w), tmp);
       reset_focus();
       return TRUE;
     } else {
