@@ -1615,8 +1615,8 @@ create_winMain (void)
   gtk_style_context_add_class (gsc, GTK_STYLE_CLASS_LINKED);
   gtk_style_context_add_class (gsc, GTK_STYLE_CLASS_RAISED);
 
-  //buttonZoomOut = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-out");
-  icon = gtk_image_new_from_icon_name("zoom-out-symbolic", GTK_ICON_SIZE_MENU);
+  icon = gtk_image_new_from_icon_name("zoom-out", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("zoom-out-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   buttonZoomOut = (GtkWidget*) gtk_button_new ();
   gtk_widget_set_tooltip_text(buttonZoomOut, _("Zoom Out"));
@@ -1627,8 +1627,8 @@ create_winMain (void)
   //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonZoomOut);
   gtk_box_pack_start (GTK_BOX (button_group_box), buttonZoomOut, TRUE, TRUE, 0);
 
-  //buttonPageWidth = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-fit");
-  icon = gtk_image_new_from_icon_name("zoom-fit-best-symbolic", GTK_ICON_SIZE_MENU);
+  icon = gtk_image_new_from_icon_name("zoom-fit-best", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("zoom-fit-best-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   buttonPageWidth = (GtkWidget*) gtk_button_new ();
   gtk_widget_set_tooltip_text(buttonPageWidth, _("Page Width"));
@@ -1639,8 +1639,8 @@ create_winMain (void)
   //gtk_header_bar_pack_end(toolbarMain, buttonPageWidth);
   gtk_box_pack_start (GTK_BOX (button_group_box), buttonPageWidth, TRUE, TRUE, 0);
 
-  //buttonZoomIn = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-in");
-  icon = gtk_image_new_from_icon_name("zoom-in-symbolic", GTK_ICON_SIZE_MENU);
+  icon = gtk_image_new_from_icon_name("zoom-in", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("zoom-in-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   buttonZoomIn = (GtkWidget*) gtk_button_new ();
   gtk_widget_set_tooltip_text(buttonZoomIn, _("Zoom In"));
@@ -1652,8 +1652,8 @@ create_winMain (void)
   gtk_box_pack_start (GTK_BOX (button_group_box), buttonZoomIn, TRUE, TRUE, 0);
 
 
-  //buttonNormalSize = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-zoom-100");
-  icon = gtk_image_new_from_icon_name("zoom-original-symbolic", GTK_ICON_SIZE_MENU);
+  icon = gtk_image_new_from_icon_name("zoom-original", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("zoom-original-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   buttonNormalSize = (GtkWidget*) gtk_button_new ();
   gtk_widget_set_tooltip_text(buttonNormalSize, _("Normal Size"));
@@ -1693,6 +1693,7 @@ create_winMain (void)
   */
 
   /*
+  //icon = gtk_image_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
   icon = gtk_image_new_from_icon_name("document-save-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //saveButton = (GtkWidget*) gtk_tool_button_new(icon, _("Save"));
@@ -1843,8 +1844,9 @@ create_winMain (void)
   gsc = gtk_widget_get_style_context (button_group_box);
   gtk_style_context_add_class (gsc, GTK_STYLE_CLASS_LINKED);
   gtk_style_context_add_class (gsc, GTK_STYLE_CLASS_RAISED);
-  //buttonCut = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-cut");
+
   icon = gtk_image_new_from_icon_name("edit-cut", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("edit-cut-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //buttonCut = (GtkWidget*) gtk_tool_button_new(icon, _("Cut"));
   buttonCut = (GtkWidget*) gtk_button_new ();
@@ -1856,8 +1858,8 @@ create_winMain (void)
   //gtk_header_bar_pack_start(toolbarMain, buttonCut);
   gtk_box_pack_start (GTK_BOX (button_group_box), buttonCut, TRUE, TRUE, 0);
 
-  //buttonCopy = (GtkWidget*) gtk_tool_button_new_from_stock ("gtk-copy");
   icon = gtk_image_new_from_icon_name("edit-copy", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("edit-copy-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //buttonCopy = (GtkWidget*) gtk_tool_button_new(icon, _("Copy"));
   buttonCopy = (GtkWidget*) gtk_button_new ();
@@ -1871,6 +1873,7 @@ create_winMain (void)
 
 
   icon = gtk_image_new_from_icon_name("edit-paste", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("edit-paste-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //buttonPaste = (GtkWidget*) gtk_tool_button_new(icon, _("Paste"));
   buttonPaste = (GtkWidget*) gtk_button_new ();
