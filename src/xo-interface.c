@@ -1588,12 +1588,11 @@ create_winMain (void)
   //gtk_box_pack_start (GTK_BOX (vboxMain), menubar, FALSE, FALSE, 0);
 
   //toolbarMain = gtk_toolbar_new ();
-  toolbarMain = gtk_header_bar_new ();
-  //g_object_set(toolbarMain, "spacing", 12, NULL);
-  // TODO: headbar buttons too big: this doesn't help
-  //g_object_set(toolbarMain, "border-width", 0, NULL);
+  toolbarMain = (GtkHeaderBar*) gtk_header_bar_new ();
+  //g_object_set(toolbarMain, "spacing", 6, NULL);
+  //g_object_set(toolbarMain, "height-request", 32, NULL);
   gtk_header_bar_set_title(toolbarMain, "File name goes here");
-  gtk_header_bar_set_subtitle(toolbarMain, "status");
+  //gtk_header_bar_set_subtitle(toolbarMain, "status");
   gtk_header_bar_set_show_close_button(toolbarMain, TRUE);
   gtk_window_set_titlebar(GTK_WINDOW (winMain), (GtkWidget*) toolbarMain);
   //gtk_widget_show((GtkWidget*) toolbarMain);
@@ -1690,6 +1689,7 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (toolitem11), vseparator1);
   */
 
+  /*
   icon = gtk_image_new_from_icon_name("document-save-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //saveButton = (GtkWidget*) gtk_tool_button_new(icon, _("Save"));
@@ -1697,11 +1697,10 @@ create_winMain (void)
   gtk_button_set_image ( GTK_BUTTON (saveButton), icon);
   gtk_widget_set_tooltip_text(saveButton, _("Save"));
   gtk_widget_set_valign (saveButton, GTK_ALIGN_CENTER);
-
   gtk_widget_show (saveButton);
-
   //gtk_container_add (GTK_CONTAINER (toolbarMain), saveButton);
   gtk_header_bar_pack_end(toolbarMain, saveButton);
+  */
 
   /* cbm: a toggle button to show the pen toolbar
      todo: should use the icon of the currently selected tool?
