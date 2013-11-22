@@ -1714,7 +1714,9 @@ create_winMain (void)
   gtk_widget_show (tmp_image);
 
   //gtk_widget_show(icon);
-  GtkToggleButton* tbpenToggle;
+  //GtkToggleButton* tbpenToggle;
+  // cbm todo: move up above
+  GtkWidget* tbpenToggle;
   //tbpenToggle = gtk_toggle_button_new_with_label("P");
   tbpenToggle = gtk_toggle_button_new();
   //g_object_set(tbpenToggle, "icon-size", GTK_ICON_SIZE_MENU, NULL);
@@ -1722,9 +1724,9 @@ create_winMain (void)
   gtk_container_add(GTK_CONTAINER (tbpenToggle), tmp_image);
   gtk_widget_set_tooltip_text(tbpenToggle, _("Toggle pen toolbar"));
   gtk_widget_set_valign (tbpenToggle, GTK_ALIGN_CENTER);
-  gtk_widget_show((GtkWidget*) tbpenToggle);
-  gtk_toggle_button_set_active(tbpenToggle, TRUE);
-  gtk_header_bar_pack_end(toolbarMain, (GtkWidget*) tbpenToggle);
+  gtk_widget_show(tbpenToggle);
+  gtk_toggle_button_set_active(GTK_TOGGLE_BUTTON(tbpenToggle), TRUE);
+  gtk_header_bar_pack_end(toolbarMain, tbpenToggle);
 
 
 
@@ -1908,11 +1910,11 @@ create_winMain (void)
   icon = gtk_image_new_from_icon_name("edit-undo", GTK_ICON_SIZE_MENU);
   //g_object_set (icon, "margin", 1, NULL);
   gtk_widget_show(icon);
-  //buttonUndo = (GtkWidget*) gtk_tool_button_new(icon, _("Undo"));
-  buttonUndo = (GtkWidget*) gtk_button_new();
+  //buttonUndo = gtk_tool_button_new(icon, _("Undo"));
+  buttonUndo = gtk_button_new();
   gtk_button_set_image (GTK_BUTTON (buttonUndo), icon);
-  gtk_widget_set_tooltip_text(buttonUndo, _("Undo"));
-  gtk_widget_set_valign (GTK_BUTTON (buttonUndo), GTK_ALIGN_CENTER);
+  gtk_widget_set_tooltip_text( buttonUndo, _("Undo"));
+  gtk_widget_set_valign (buttonUndo, GTK_ALIGN_CENTER);
   gtk_widget_show (buttonUndo);
   //gtk_container_add (GTK_CONTAINER (toolbarMain), buttonUndo);
   //gtk_header_bar_pack_start (toolbarMain, buttonUndo);
