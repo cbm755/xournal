@@ -263,9 +263,9 @@ create_winMain (void)
   GtkWidget *menuHelp_menu;
   GtkWidget *helpIndex;
   GtkWidget *helpAbout;
-  //GtkWidget *toolbarMain;
   GtkHeaderBar *toolbarMain;
   GtkIconSize tmp_toolbar_icon_size;
+  GtkWidget* tbpenToggle;
   GtkWidget *saveButton;
   //GtkWidget *newButton;
   //GtkWidget *openButton;
@@ -1586,9 +1586,8 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (toolitem11), vseparator1);
   */
 
-  /*
-  //icon = gtk_image_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
-  icon = gtk_image_new_from_icon_name("document-save-symbolic", GTK_ICON_SIZE_MENU);
+  icon = gtk_image_new_from_icon_name("document-save", GTK_ICON_SIZE_MENU);
+  //icon = gtk_image_new_from_icon_name("document-save-symbolic", GTK_ICON_SIZE_MENU);
   gtk_widget_show(icon);
   //saveButton = (GtkWidget*) gtk_tool_button_new(icon, _("Save"));
   saveButton = (GtkWidget*) gtk_button_new ();
@@ -1598,22 +1597,31 @@ create_winMain (void)
   gtk_widget_show (saveButton);
   //gtk_container_add (GTK_CONTAINER (toolbarMain), saveButton);
   gtk_header_bar_pack_end(toolbarMain, saveButton);
-  */
+
 
   /* cbm: a toggle button to show the pen toolbar
-     todo: should use the icon of the currently selected tool?
+     todo: should it use the icon of the currently selected tool?
      todo: show animate like the search bar?  See "gnome-documents"
      todo: png file controls size of this? */
-  tmp_image = create_pixmap (winMain, "pencil.png");
+  //tmp_image = gtk_image_new_from_icon_name("document-save-symbolic", GTK_ICON_SIZE_MENU);
+  tmp_image = create_pixmap (winMain, "pencil-16x22.png");
+  //tmp_image = gtk_image_new_from_file("pixmaps/pencil.png");
   gtk_widget_show (tmp_image);
 
-  //gtk_widget_show(icon);
-  //GtkToggleButton* tbpenToggle;
-  // cbm todo: move up above
-  GtkWidget* tbpenToggle;
-  //tbpenToggle = gtk_toggle_button_new_with_label("P");
+  //const GdkPixbuf *pb = gtk_image_get_pixbuf(GTK_IMAGE(tmp_image));
+  //printf("pencil image is %d x %d pixels\n", gdk_pixbuf_get_width(pb), gdk_pixbuf_get_height(pb));
+
   tbpenToggle = gtk_toggle_button_new();
+
+  /* Some sizing hack to match vertical height of other buttons,
+     surely not theme indep */
+  g_object_set (tmp_image, "margin", 1, NULL);
   //g_object_set(tbpenToggle, "icon-size", GTK_ICON_SIZE_MENU, NULL);
+  //gtk_widget_set_margin_left (GTK_WIDGET (tbpenToggle), 0);
+  //gtk_widget_set_margin_right (GTK_WIDGET (tbpenToggle), 0);
+  //gtk_widget_set_margin_right (GTK_WIDGET (tbpenToggle), 0);
+  //gtk_widget_set_margin_bottom (GTK_WIDGET (tbpenToggle), 3);
+  //gtk_button_set_image (GTK_BUTTON (tbpenToggle), tmp_image);
 
   gtk_container_add(GTK_CONTAINER (tbpenToggle), tmp_image);
   gtk_widget_set_tooltip_text(tbpenToggle, _("Toggle pen toolbar"));
