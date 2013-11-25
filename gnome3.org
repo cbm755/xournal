@@ -1,0 +1,37 @@
+* Gnome3-style interface experiment
+
+This is a GUI experiment using Gnome 3 style, including client side
+decorations, no menubar, etc.  My motivation is to maximize vertical
+screen space.
+
+** Notes and TODOs
+
+Some of these are marked with [XX]: these are likely useful for the
+upstream xournal too (or at least the gtk3 one).
+
+*** full screen doesn't show the correct toolbar
+    I'm not sure what I want this to do: possibly same interface
+    without the gnome3 bar.  If current behaviour, at least keep it
+    consistent with the toolbar toggle.
+
+*** I manually modified the glade output files
+    Surely a bad idea.  Look into upstream moving to XML (I think
+    someone is working on this?)
+
+*** tbpen_toggle is a toggle button for the pen toolbar
+    There are some sizing hacks to make, I guess it should use a 16x16
+    icon?
+
+*** [XX] Spin button for page entry is now a GtkEntry
+    There is a journal.h #define to toggle this.  Should remove that
+    and just keep the new one for simplicity.  Re: upstream: drop the
+    status area bar?  Move page and layers to toolbar.
+
+*** Should use the Application Menu
+    (the menu next to the Activities button).  There is a fall-back
+    headerbar button (coming in Gtk 3.12?) so revisit then?  In
+    general preferences sort of stuff goes there, (non-specific to the
+    current document).
+
+*** [XX] Color selector buttons should telescope to menu before font selection
+
