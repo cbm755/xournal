@@ -3257,7 +3257,7 @@ on_entryPageNo_activate              (GtkEntry   *entry,
   gchar *text;
   int val;
 
-  // todo: what was this for?
+  // cbm todo: what was this for?
   //if (!gtk_widget_has_focus(GTK_WIDGET(spinbutton)))
   //  gtk_widget_grab_focus(GTK_WIDGET(canvas));
   //end_text();

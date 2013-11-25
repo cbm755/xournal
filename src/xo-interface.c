@@ -42,6 +42,8 @@ create_winMain (void)
   GtkWidget *vboxMain;
   GtkWidget *menuButton1;
   GtkWidget *menuButton2;
+  GtkWidget* menu1_menu;
+  GtkWidget* menu2_menu;
   GtkWidget *fileNew;
   GtkWidget *fileNewBackground;
   GtkWidget *image623;
@@ -374,58 +376,9 @@ create_winMain (void)
   gtk_container_add (GTK_CONTAINER (winMain), vboxMain);
 
 
-
-
-
-  GtkWidget* menu2;
-  GtkWidget* menu2_menu;
-  menu2 = gtk_menu_item_new();
-  //icon = gtk_image_new_from_icon_name("view-list-symbolic", GTK_ICON_SIZE_MENU);
-  icon = gtk_image_new_from_icon_name("document-properties-symbolic", GTK_ICON_SIZE_MENU);
-  gtk_widget_show(icon);
-  gtk_container_add(GTK_CONTAINER (menu2), icon);
-  // cbm: todo: a quick way to do a menubutton is just to change the style
-  // (and have a single menu item)
-  gsc = gtk_widget_get_style_context(menu2);
-  gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_BUTTON);
-  gtk_widget_set_valign (menu2, GTK_ALIGN_CENTER);
-  // cbm: todo: spacing hacks here, should just use a button
-  g_object_set(menu2, "margin", 2, NULL);
-  g_object_set(icon, "margin", 6, NULL);
-  gtk_widget_show (menu2);
-  menu2_menu = gtk_menu_new ();
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu2), menu2_menu);
-
-
-
-  GtkWidget* menu1;
-  GtkWidget* menu1_menu;
-  //menu1 = gtk_menu_item_new_with_label("Menu*");
-  menu1 = gtk_menu_item_new();
-  icon = gtk_image_new_from_icon_name("emblem-system-symbolic", GTK_ICON_SIZE_MENU);
-  gtk_widget_show (icon);
-
-  //tmp_image = create_pixmap (winMain, "pencil.png");
-  //tmp_image = gtk_pixmap_new_from_icon_name("go-previous", -1);
-  //gtk_widget_show (tmp_image);
-  gtk_container_add(GTK_CONTAINER (menu1), icon);
-  // cbm: todo: a quick way to do a menubutton is just to change the style
-  // (and have a single menu item)
-  gsc = gtk_widget_get_style_context(menu1);
-  gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_BUTTON);
-  gtk_widget_set_valign (menu1, GTK_ALIGN_CENTER);
-  // cbm: todo: spacing hacks here, should just use a button
-  g_object_set(menu1, "margin", 2, NULL);
-  g_object_set(icon, "margin", 6, NULL);
-  gtk_widget_show(menu1);
-
+  /* Build menus */
   menu1_menu = gtk_menu_new ();
-  gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu1), menu1_menu);
-
-  // cbm: todo: connect to menubutton
-  //gtk_menu_button_set_popup (GTK_MENU_BUTTON (menubutton), menu1_menu);
-
-
+  menu2_menu = gtk_menu_new ();
 
   fileNew = gtk_image_menu_item_new_from_stock ("gtk-new", accel_group);
   gtk_widget_show (fileNew);
@@ -1705,7 +1658,6 @@ create_winMain (void)
   //gtk_box_pack_start (GTK_BOX (hbox1), labelPage, FALSE, FALSE, 0);
   //gtk_box_pack_start (GTK_BOX (button_group_box), labelPage, TRUE, TRUE, 0);
 
-  /* cbm: todo: drop the spinbox for an entrybox */
  #ifdef ENTRY_NOSPIN
   //GtkEntryBuffer* entryPageNoBuf;
   //entryPageNoBuf = gtk_entry_buffer_new ("1", 12);
@@ -1738,8 +1690,7 @@ create_winMain (void)
   labelNumpages = gtk_label_new (_(" of n"));
   gtk_widget_set_valign (labelNumpages, GTK_ALIGN_CENTER);
   gtk_widget_show (labelNumpages);
-  /* render the label as a entry box */
-  /* cbm: todo: make it insensitive */
+  /* render the label as an insensitve entry box */
   gsc = gtk_widget_get_style_context (labelNumpages);
   gtk_style_context_add_class(gsc, GTK_STYLE_CLASS_ENTRY);
   g_object_set (labelNumpages, "sensitive", FALSE, NULL);
