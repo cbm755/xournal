@@ -2709,7 +2709,7 @@ on_canvas_button_press_event           (GtkWidget       *widget,
 
   // process the event
   
-  if (ui.toolno[mapping] == TOOL_HAND || inputSource ==  GDK_SOURCE_TOUCHPAD) {
+  if (ui.toolno[mapping] == TOOL_HAND || inputSource ==  GDK_SOURCE_TOUCHSCREEN) {
     ui.cur_item_type = ITEM_HAND;
 
     // we save it in coordinates
