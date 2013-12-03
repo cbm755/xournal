@@ -19,15 +19,6 @@
 #include<libgrip/grip.h>
 #endif
 
-//gint my_popup_handler (GtkWidget *widget, GdkEvent *event);
-//void my_popup_handler (GtkMenuItem *widget, gpointer user_data);
-gint
-my_popup_handler (GtkWidget *widget, GdkEvent *event);
-
-void
-on_popup_handler                       (GtkMenuItem     *menuitem,
-                                        gpointer         user_data);
-
 void
 on_fileNew_activate                    (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
